@@ -1,0 +1,26 @@
+<h1>Available Flights</h1>
+
+<%= form_with url: flights_path, method: :get, local: true do |f|%>
+
+   <div>
+        <%=f.label :departude_id, "Departure Airport"%>
+        <%=f.select(:departure_id, @departure_options)%>
+    </div> 
+
+    <div>
+        <%= f.label :arrival_id, "Arrival Airport"%>
+        <%= f.select(:arrival_id, @arrival_options)%>
+    </div>
+    
+
+    <div>
+        <%= f.label :passenger, "Passenger"%>
+        <%= f.select(:passenger, (1..4))%>
+    </div>
+    
+
+    <div>
+        <%= f.label :start_datetime, "Date and Time"%>
+        <%= f.select(:start_datetime, @time_options)%>
+    </div>
+<%end%>
