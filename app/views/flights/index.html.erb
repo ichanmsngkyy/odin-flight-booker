@@ -1,15 +1,15 @@
-<h1>Available Flights</h1>
+<h1>Search Flights</h1>
 
 <%= form_with url: flights_path, method: :get, local: true do |f|%>
 
    <div>
-        <%=f.label :departude_id, "Departure Airport"%>
-        <%=f.select(:departure_id, @departure_options)%>
+        <%=f.label :departure_code, "Departure Airport"%>
+        <%=f.select(:departure_code, @departure_options)%>
     </div> 
 
     <div>
-        <%= f.label :arrival_id, "Arrival Airport"%>
-        <%= f.select(:arrival_id, @arrival_options)%>
+        <%= f.label :arrival_code, "Arrival Airport"%>
+        <%= f.select(:arrival_code, @arrival_options)%>
     </div>
     
 
@@ -23,4 +23,24 @@
         <%= f.label :start_datetime, "Date and Time"%>
         <%= f.select(:start_datetime, @time_options)%>
     </div>
+
+    <%= f.submit "Search Flight"%>
 <%end%>
+
+<%= form_with url: new_booking_path, method: :post, local: true do |f|%>
+    <%if @flights_available.present?%>
+    <h3>Available Flights</h3>
+
+        <%= f.collection_radio_buttons :flights_id, @flights_available, :id, :flight_info do |b|%>
+            <div>
+                <%= b.radio_button%>
+                <%= b.label%>
+            </div>
+        <%end%>
+
+    <%= hidden_field_tag :passengers, params[:passengers]%>
+    <%else%>
+        <p>No flights avaialble for selected routes and date.</p>
+    <%end%>
+<%end%>
+
