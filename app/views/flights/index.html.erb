@@ -27,20 +27,18 @@
     <%= f.submit "Search Flight"%>
 <%end%>
 
-<%= form_with url: new_booking_path, method: :post, local: true do |f|%>
-    <%if @flights_available.present?%>
-    <h3>Available Flights</h3>
+<% if @flights_available.present? %>
+  <h3>Available Flights</h3>
 
-        <%= f.collection_radio_buttons :flights_id, @flights_available, :id, :flight_info do |b|%>
-            <div>
-                <%= b.radio_button%>
-                <%= b.label%>
-            </div>
-        <%end%>
+  
+ <%= form_with url: new_booking_path, method: :get, local: true do |f| %>
+  <%= hidden_field_tag :passenger, params[:passenger] %>
 
-    <%= hidden_field_tag :passengers, params[:passengers]%>
-    <%else%>
-        <p>No flights avaialble for selected routes and date.</p>
-    <%end%>
-<%end%>
+  <%= f.collection_radio_buttons :flight_id, @flights_available, :id, :flight_info %>
+  <%= f.submit "Select Flight" %>
+<% end %>
+
+<% else %>
+  <p>No flights available for the selected routes and date.</p>
+<% end %>
 
