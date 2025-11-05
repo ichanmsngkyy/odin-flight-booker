@@ -1,5 +1,7 @@
 <h2>Book your Flight</h2>
 
+<div data-controller="passenger">
+
 <%=form_with model: @booking do |f|%>
 
     <%= f.hidden_field :flight_id, value: @flight.id%>
@@ -18,17 +20,46 @@
     <%= f.text_field :arrival_airport, value: @flight.arrival_airport.airport_code, disabled: true %>   
     </div>
     
+    <div data-passenger-target="container">
     <%= f.fields_for :passengers do |passenger_form|%>
-    <div>
+      <div>
       <%= passenger_form.label :name%>
       <%=passenger_form.text_field :name%>
 
       <%= passenger_form.label :email%>
       <%=passenger_form.email_field :email%>
+      <button type = "button" data-action = "click->passenger#delete">
+      Remove
+      </button>
+      </div>
       <%end%>
     </div>
+
+    <template id = "passenger" data-passenger-target="template" >
+      <div>
+        <label for="">Name</label>
+        <input type="text" name="booking[passengers_attributes][NEW_RECORD][name]">
+        <label for="">Email</label>
+        <input type="email" name="booking[passengers_attributes][NEW_RECORD][email]">
+        <button type = "button" data-action = "click->passenger#delete">
+          Remove
+          </button>
+      </div>
+    </template>
+    <button type = "button" data-passenger-target = "passenger" data-action = "click->passenger#add">Add a Passenger</button>
       
       <%= link_to "Back", flights_path, method: :get%>
       <%= f.submit "Confirm"%>
-<%end%>
+
+  <% end %>
+</div>
+
+  <% if @booking.errors.any? %>
+  <div>
+    <% @booking.errors.full_messages.each do |message| %>
+      <p><%= message %></p>
+    <% end %>
+      </div>
+       <% end %>
+
 
