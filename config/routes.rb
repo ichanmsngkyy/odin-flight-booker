@@ -14,4 +14,5 @@ Rails.application.routes.draw do
   root "flights#index"
   resources :flights, only: [ :index ]
   resources :bookings, only: [ :new, :create, :show ]
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 end

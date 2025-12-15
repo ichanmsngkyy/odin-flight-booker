@@ -11,7 +11,10 @@ class BookingsController < ApplicationController
     @booking = Booking.new(booking_params)
 
     if @booking.save
-      redirect_to @booking, notice: "Booking successfully created!"
+      @booking.passengers.each do |passenger|
+      PassengerMailer.flight_confirmation(passenger).deliver_later
+      end
+    redirect_to @booking, notice: "Booking successfully created!"
     else
       @flight = @booking.flight
       render :new, alert: "Booking failed."
